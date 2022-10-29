@@ -215,32 +215,32 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Container(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                    new MaterialPageRoute(
-                                        builder: (context) => SignupPage()));
-                              },
-                              child: RichText(
-                                  text: TextSpan(
-                                      text: "Don't have an account? ",
-                                      style: TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.grey),
-                                      children: <TextSpan>[
-                                    TextSpan(
-                                        text: 'Signup',
-                                        style: TextStyle(
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black))
-                                  ])),
-                            ))),
+                    // Container(
+                    //     padding: const EdgeInsets.only(top: 20.0),
+                    //     child: Align(
+                    //         alignment: Alignment.center,
+                    //         child: InkWell(
+                    //           onTap: () {
+                    //             Navigator.of(context).push(
+                    //                 new MaterialPageRoute(
+                    //                     builder: (context) => SignupPage()));
+                    //           },
+                    //           child: RichText(
+                    //               text: TextSpan(
+                    //                   text: "Don't have an account? ",
+                    //                   style: TextStyle(
+                    //                       fontSize: 15.0,
+                    //                       fontWeight: FontWeight.w400,
+                    //                       color: Colors.grey),
+                    //                   children: <TextSpan>[
+                    //                 TextSpan(
+                    //                     text: 'Signup',
+                    //                     style: TextStyle(
+                    //                         fontSize: 15.0,
+                    //                         fontWeight: FontWeight.bold,
+                    //                         color: Colors.black))
+                    //               ])),
+                    //         ))),
                     // OrDivider(),
                     // SizedBox(
                     //   height: 20,

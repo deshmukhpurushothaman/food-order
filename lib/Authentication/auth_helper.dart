@@ -25,13 +25,19 @@ class AuthHelper {
     }
   }
 
-  static signUpWithEmail(
-      {required String email,
-      required String password,
-      required String name}) async {
+  static signUpWithEmail({
+    required String email,
+    required String password,
+    required String name,
+    required String company,
+  }) async {
     try {
       final res = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      FirebaseFirestore.instance.collection('users').doc(res.user?.email).set({
+        name: name,
+        company: company,
+      });
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       print(e.toString());
@@ -68,6 +74,7 @@ class UserHelper {
     Map<String, dynamic> userData = {
       "name": user!.displayName,
       "email": user.email,
+      // "company":  user.company,
       "last_login": user.metadata.creationTime!.millisecondsSinceEpoch,
       "role": "0",
     };

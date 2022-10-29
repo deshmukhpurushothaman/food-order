@@ -18,7 +18,7 @@ class _MenuState extends State<Menu> {
           "Food Menu",
           style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.orange[500],
+        backgroundColor: Colors.orange[300],
       ),
       body: Container(
           child: Column(
@@ -39,11 +39,103 @@ class _MenuState extends State<Menu> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                "Restaurant 1",
+                "Apple Juice",
                 style: (TextStyle(color: Colors.black, fontSize: 20)),
               ),
             ),
           ),
+          SizedBox(
+            height: 30,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width * 0.65,
+              alignment: Alignment.center,
+              // color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.orange[300],
+                border: Border.all(
+                  width: 4,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                "Fried Rice",
+                style: (TextStyle(color: Colors.black, fontSize: 20)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width * 0.65,
+              alignment: Alignment.center,
+              // color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.orange[300],
+                border: Border.all(
+                  width: 4,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                "Bread Omlette",
+                style: (TextStyle(color: Colors.black, fontSize: 20)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width * 0.65,
+              alignment: Alignment.center,
+              // color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.orange[300],
+                border: Border.all(
+                  width: 4,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                "Chicken Briyani",
+                style: (TextStyle(color: Colors.black, fontSize: 20)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width * 0.65,
+              alignment: Alignment.center,
+              // color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.orange[300],
+                border: Border.all(
+                  width: 4,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                "Burger",
+                style: (TextStyle(color: Colors.black, fontSize: 20)),
+              ),
+            ),
+          )
         ],
       )),
     );

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'auth_helper.dart';
+import '../Authentication/auth_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../Home.dart';
 
 bool isHiddenPassword = true;
 
-class SignupPage extends StatefulWidget {
+class CreateUser extends StatefulWidget {
   @override
-  _SignupPageState createState() => _SignupPageState();
+  _CreateUserState createState() => _CreateUserState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _CreateUserState extends State<CreateUser> {
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  late TextEditingController _companyController;
 
   @override
   void initState() {
@@ -21,12 +23,20 @@ class _SignupPageState extends State<SignupPage> {
     _nameController = TextEditingController(text: "");
     _emailController = TextEditingController(text: "");
     _passwordController = TextEditingController(text: "");
+    _companyController = TextEditingController(text: "");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      appBar: AppBar(
+        title: Text(
+          "Create User",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.orange[500],
+      ),
+      backgroundColor: Colors.orange[300],
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +53,7 @@ class _SignupPageState extends State<SignupPage> {
             //   ),
             // ),
             Container(
-              height: 500,
+              // height: 500,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
                 color: Colors.white,
@@ -55,7 +65,7 @@ class _SignupPageState extends State<SignupPage> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "Signup",
+                        "Create User",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 40,
@@ -119,6 +129,35 @@ class _SignupPageState extends State<SignupPage> {
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           hintText: "Your Email Id",
+                          hintStyle: TextStyle(color: Colors.grey)),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 60, top: 20),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Company",
+                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    padding: const EdgeInsets.only(left: 40.0, right: 20.0),
+                    child: TextField(
+                      controller: _companyController,
+                      decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          hintText: "Company",
                           hintStyle: TextStyle(color: Colors.grey)),
                     ),
                   ),
@@ -192,47 +231,6 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                   ),
-                  // Container(
-                  //     padding: const EdgeInsets.only(left: 60.0, top: 40.0),
-                  //     child: Align(
-                  //         alignment: Alignment.topLeft,
-                  //         child: Text(
-                  //           "Confirm Password",
-                  //           style: TextStyle(
-                  //             color: Colors.black,
-                  //             fontSize: 20.0,
-                  //           ),
-                  //         ))),
-                  // Container(
-                  //   margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  //   padding: const EdgeInsets.only(left: 40.0, right: 20.0),
-                  //   child: TextField(
-                  //     obscureText: isHiddenPassword,
-                  //     decoration: InputDecoration(
-                  //       enabledBorder: UnderlineInputBorder(
-                  //         borderSide: BorderSide(color: Color(0xFF7Fb539)),
-                  //       ),
-                  //       focusedBorder: UnderlineInputBorder(
-                  //         borderSide: BorderSide(color: Color(0xFF7Fb539)),
-                  //       ),
-                  //       border: UnderlineInputBorder(
-                  //         borderSide: BorderSide(color: Color(0xFF7Fb539)),
-                  //       ),
-                  //       hintText: "Confirm Password",
-                  //       hintStyle: TextStyle(color: Colors.grey),
-                  //       suffixIcon: IconButton(
-                  //         icon: Icon(isHiddenPassword
-                  //             ? Icons.visibility
-                  //             : Icons.visibility_off),
-                  //         onPressed: () {
-                  //           setState(() {
-                  //             isHiddenPassword = !isHiddenPassword;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -274,6 +272,11 @@ class _SignupPageState extends State<SignupPage> {
                             print("Username cannot be empty");
                             return;
                           }
+                          if (_companyController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "Company cannot be empty");
+                            return;
+                          }
                           if (_passwordController.text.isEmpty ||
                               _passwordController.text.length < 6) {
                             Fluttertoast.showToast(
@@ -285,13 +288,13 @@ class _SignupPageState extends State<SignupPage> {
                                 name: _nameController.text,
                                 email: _emailController.text,
                                 password: _passwordController.text,
-                                company: 'admin');
+                                company: _companyController.text);
                             if (user != null) {
-                              Fluttertoast.showToast(msg: "Signup successful");
-                              print("Signup successful");
+                              Fluttertoast.showToast(
+                                  msg: "User created successfully");
                               Navigator.pop(context);
                               Navigator.of(context).push(new MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
+                                  builder: (context) => HomePage()));
                             } else if (user == null) {
                               Fluttertoast.showToast(
                                   msg: "User with this Email already exists");
@@ -301,76 +304,18 @@ class _SignupPageState extends State<SignupPage> {
                           }
                         },
                         child: Text(
-                          "Signup",
+                          "Create",
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: Colors.white),
                         ),
                       )),
-                  // Container(
-                  //     padding: const EdgeInsets.only(top: 20.0),
-                  //     child: Align(
-                  //         alignment: Alignment.center,
-                  //         child: InkWell(
-                  //           onTap: () {
-                  //             Navigator.of(context).push(new MaterialPageRoute(
-                  //                 builder: (context) => LoginPage()));
-                  //           },
-                  //           child: RichText(
-                  //               text: TextSpan(
-                  //                   text: 'Already have an account? ',
-                  //                   style: TextStyle(
-                  //                       fontSize: 15.0,
-                  //                       fontWeight: FontWeight.w400,
-                  //                       color: Colors.grey),
-                  //                   children: <TextSpan>[
-                  //                 TextSpan(
-                  //                     text: 'Login',
-                  //                     style: TextStyle(
-                  //                         fontSize: 15.0,
-                  //                         fontWeight: FontWeight.bold,
-                  //                         color: Colors.black))
-                  //               ])),
-                  //         ))),
                 ],
               ),
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class OrDivider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: <Widget>[
-          buildDivider(),
-          Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: Text(
-              "Or Signup With",
-              style: TextStyle(
-                  color: Colors.grey[500],
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15),
-            ),
-          ),
-          buildDivider(),
-        ],
-      ),
-    );
-  }
-
-  Expanded buildDivider() {
-    return Expanded(
-      child: Divider(
-        color: Colors.black,
-        height: 1.5,
       ),
     );
   }

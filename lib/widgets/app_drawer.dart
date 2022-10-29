@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_booking/Screens/create_user.dart';
 
 import '../Authentication/auth_helper.dart';
 
@@ -14,6 +15,16 @@ class AppDrawer extends StatelessWidget {
             ),
             backgroundColor: Colors.orange[300],
             automaticallyImplyLeading: false,
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.man_rounded),
+            title: Text('Create user'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                  new MaterialPageRoute(builder: (context) => CreateUser()));
+            },
           ),
           Divider(),
           ListTile(
