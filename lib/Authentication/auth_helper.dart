@@ -34,10 +34,11 @@ class AuthHelper {
     try {
       final res = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      FirebaseFirestore.instance.collection('users').doc(res.user?.email).set({
-        name: name,
-        company: company,
-      });
+      print("${res.user}");
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(res.user?.uid)
+          .set({"name": name, "company": company, "email": email, "role": 0});
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       print(e.toString());
