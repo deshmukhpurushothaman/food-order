@@ -5,8 +5,31 @@ import 'package:food_booking/Screens/create_user.dart';
 import 'package:food_booking/Start.dart';
 import '../Authentication/auth_helper.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  State<AppDrawer> createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
   final User? user = FirebaseAuth.instance.currentUser;
+  var userRole;
+
+  void initState() {
+    super.initState();
+    _getUserRole();
+  }
+
+  void _getUserRole() async {
+    QuerySnapshot res = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: user!.email)
+        .get();
+    setState(() {
+      var userData = res.docs[0].data() as Map<String, dynamic>;
+      userRole = userData['role'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -69,15 +92,17 @@ class AppDrawer extends StatelessWidget {
             ],
           ),
           const Divider(),
-          ListTile(
-            leading: const Icon(Icons.man_rounded),
-            title: const Text('Create user'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                  new MaterialPageRoute(builder: (context) => CreateUser()));
-            },
-          ),
+          userRole == "0"
+              ? (ListTile(
+                  leading: const Icon(Icons.man_rounded),
+                  title: const Text('Create user'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(new MaterialPageRoute(
+                        builder: (context) => CreateUser()));
+                  },
+                ))
+              : (Container()),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.exit_to_app),

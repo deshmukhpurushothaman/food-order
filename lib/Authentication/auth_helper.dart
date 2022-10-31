@@ -13,8 +13,12 @@ class AuthHelper {
     try {
       final res = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      final User? user = res.user;
-      return user;
+      // final User? user = res.user;
+      QuerySnapshot user = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: res.user!.email)
+          .get();
+      return user.docs[0].data() as Map<String, dynamic>;
     } on FirebaseAuthException catch (e) {
       print(e.toString());
       if (e.code == 'user-not-found') {

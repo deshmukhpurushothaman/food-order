@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class Menu extends StatefulWidget {
   // const Menu({super.key});
@@ -82,18 +81,26 @@ class _MenuState extends State<Menu> {
         .where('createdBy', isEqualTo: user!.email)
         .orderBy('createdAt', descending: false)
         .get();
+
     if (res.docs.isNotEmpty) {
-      final order = res.docs[0].data() as Map<String, dynamic>;
-      setState(() {
-        _appleJuice = order['appleJuice'];
-        _firedRice = order['friedRice'];
-        _breadOmlette = order['breadOmlette'];
-        _briyani = order['briyani'];
-        _burger = order['burger'];
-        isUpdate = true;
-        docId = res.docs[0].id;
-        createdAt = order['createdAt'];
-      });
+      var order = res.docs[0].data() as Map<String, dynamic>;
+      var recDate =
+          DateFormat('yMd').format(DateTime.parse(order['createdAt']));
+      var todayDate = DateFormat('yMd').format(DateTime.now());
+      print("today date $todayDate");
+      print("recDate $recDate");
+      if (recDate == todayDate) {
+        setState(() {
+          _appleJuice = order['appleJuice'];
+          _firedRice = order['friedRice'];
+          _breadOmlette = order['breadOmlette'];
+          _briyani = order['briyani'];
+          _burger = order['burger'];
+          isUpdate = true;
+          docId = res.docs[0].id;
+          createdAt = order['createdAt'];
+        });
+      }
     }
   }
 
@@ -131,7 +138,7 @@ class _MenuState extends State<Menu> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      child: Text(
+                      child: const Text(
                         "Apple Juice",
                         style: (TextStyle(color: Colors.black, fontSize: 20)),
                       ),
@@ -150,7 +157,7 @@ class _MenuState extends State<Menu> {
                               });
                             },
                             child: Container(
-                              child: Text(
+                              child: const Text(
                                 "-",
                                 style: (TextStyle(
                                     color: Colors.black,
@@ -162,7 +169,7 @@ class _MenuState extends State<Menu> {
                           Container(
                             child: Text(
                               '${_appleJuice}',
-                              style: (TextStyle(
+                              style: (const TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
                                   fontWeight: FontWeight.w800)),

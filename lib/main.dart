@@ -65,11 +65,11 @@ class MainScreen extends StatelessWidget {
                   final user = userDoc!["role"];
                   print('main user $user');
                   // Restaurant Owner
-                  if (user.toString() == '1') {
+                  if (user == 1) {
                     return RestaurantHome();
                   }
                   // Employees
-                  else if (user.toString() == '2') {
+                  else if (user == 2) {
                     return HomePage();
                   } else {
                     //return NewPage();

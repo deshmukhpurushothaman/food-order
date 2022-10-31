@@ -1,6 +1,8 @@
 // import 'forgot-password.dart';
 import 'package:food_booking/Home.dart';
-
+import 'package:food_booking/Screens/RestaurantHome.dart';
+import 'package:food_booking/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -189,14 +191,20 @@ class _LoginPageState extends State<LoginPage> {
                               final user = await AuthHelper.signInWithEmail(
                                   email: _emailController.text,
                                   password: _passwordController.text);
-                              print("Login Page");
                               if (user != null) {
                                 Fluttertoast.showToast(msg: "Login Successful");
-                                print("login successful");
-                                print(_passwordController.text);
-                                Navigator.of(context).push(
-                                    new MaterialPageRoute(
-                                        builder: (context) => HomePage()));
+                                if (user['role'] == 1) {
+                                  Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                          builder: (context) =>
+                                              RestaurantHome()));
+                                }
+                                // Employees
+                                else {
+                                  Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                          builder: (context) => HomePage()));
+                                }
                               }
                             } catch (e) {
                               print(e);
