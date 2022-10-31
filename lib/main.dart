@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:food_booking/Screens/RestaurantHome.dart';
 import 'Start.dart';
 import 'package:flutter/cupertino.dart';
 import 'Authentication/auth_helper.dart';
@@ -15,8 +16,6 @@ import 'home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  print("Main.dart");
-  String token123;
   @override
   void initState() {
     print("Main.dart initstate");
@@ -63,20 +62,19 @@ class MainScreen extends StatelessWidget {
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (snapshot.hasData && snapshot.data != null) {
                   final userDoc = snapshot.data;
-                  print("User data");
-                  print(snapshot.data);
                   final user = userDoc!["role"];
-                  print("User $user");
-                  // if (user == '1') {
-                  //   return createpost();
-                  // } else if (user == '2') {
-                  //   print("Super admin");
-                  //   return AdminHome();
-                  // } else {
-                  //   //return NewPage();
-                  //   return HomePage();
-                  // }
-                  return HomePage();
+                  print('main user $user');
+                  // Restaurant Owner
+                  if (user.toString() == '1') {
+                    return RestaurantHome();
+                  }
+                  // Employees
+                  else if (user.toString() == '2') {
+                    return HomePage();
+                  } else {
+                    //return NewPage();
+                    return HomePage();
+                  }
                 } else {
                   return Material(
                     child: Center(

@@ -1,27 +1,108 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Menu extends StatefulWidget {
-  const Menu({super.key});
+  // const Menu({super.key});
+  final String restaurantName;
+  Menu(this.restaurantName);
 
   @override
-  State<Menu> createState() => _MenuState();
+  State<Menu> createState() => _MenuState(restaurantName);
 }
 
 class _MenuState extends State<Menu> {
+  String restaurantName;
+  _MenuState(this.restaurantName);
+  final User? user = FirebaseAuth.instance.currentUser;
   int _appleJuice = 0;
   int _firedRice = 0;
   int _breadOmlette = 0;
   int _briyani = 0;
   int _burger = 0;
-  // int
+  bool isUpdate = false;
+  var docId, createdAt;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fetchOrder();
+  }
+
+  void _onPlaceOrder() async {
+    final orderData = {
+      "appleJuice": _appleJuice,
+      "friedRice": _firedRice,
+      "breadOmlette": _breadOmlette,
+      "briyani": _briyani,
+      "burger": _burger,
+      "createdAt": DateTime.now().toIso8601String(),
+      "createdBy": user?.email,
+    };
+    FirebaseFirestore.instance
+        .collection("orders")
+        // ignore: deprecated_member_use
+        .doc()
+        // ignore: deprecated_member_use
+        .set(orderData);
+    Fluttertoast.showToast(msg: " Order placed!!");
+    Navigator.pop(context);
+    return;
+  }
+
+  void _onOrderUpdate() async {
+    final orderData = {
+      "appleJuice": _appleJuice,
+      "friedRice": _firedRice,
+      "breadOmlette": _breadOmlette,
+      "briyani": _briyani,
+      "burger": _burger,
+      "updatedAt": DateTime.now().toIso8601String(),
+      "createdBy": user?.email,
+      "createdAt": createdAt,
+    };
+    FirebaseFirestore.instance
+        .collection("orders")
+        // ignore: deprecated_member_use
+        .doc(docId)
+        // .update(orderData);
+        .set(orderData);
+    Fluttertoast.showToast(msg: " Order updated!!");
+    Navigator.pop(context);
+    return;
+  }
+
+  void _fetchOrder() async {
+    QuerySnapshot res = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('createdBy', isEqualTo: user!.email)
+        .orderBy('createdAt', descending: false)
+        .get();
+    if (res.docs.isNotEmpty) {
+      final order = res.docs[0].data() as Map<String, dynamic>;
+      setState(() {
+        _appleJuice = order['appleJuice'];
+        _firedRice = order['friedRice'];
+        _breadOmlette = order['breadOmlette'];
+        _briyani = order['briyani'];
+        _burger = order['burger'];
+        isUpdate = true;
+        docId = res.docs[0].id;
+        createdAt = order['createdAt'];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Food Menu",
+          "${restaurantName}",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.orange[300],
@@ -465,6 +546,7 @@ class _MenuState extends State<Menu> {
             onPressed: () {
               // Navigator.of(context).push(new MaterialPageRoute(
               //     builder: (context) => SignupPage()));
+              isUpdate ? _onOrderUpdate() : _onPlaceOrder();
             },
             child: Text(
               'Place Order',

@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Food Order",
+          "Restaurants",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.orange[300],
@@ -27,8 +27,8 @@ class HomePage extends StatelessWidget {
             alignment: Alignment.center,
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .push(new MaterialPageRoute(builder: (context) => Menu()));
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (context) => Menu("Restaurant 1")));
               },
               child: Container(
                 height: 100,
